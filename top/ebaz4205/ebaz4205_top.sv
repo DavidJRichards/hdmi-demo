@@ -37,7 +37,7 @@ logic [AUDIO_BIT_WIDTH-1:0] audio_sample_word_dampened; // This is to avoid givi
 assign audio_sample_word_dampened = audio_sample_word >> 8;
 
 `ifdef nothing
-//sawtooth #(.BIT_WIDTH(AUDIO_BIT_WIDTH), .SAMPLE_RATE(AUDIO_RATE), .WAVE_RATE(WAVE_RATE)) sawtooth (.clk_audio(clk_audio), .level(audio_sample_word));
+sawtooth #(.BIT_WIDTH(AUDIO_BIT_WIDTH), .SAMPLE_RATE(AUDIO_RATE), .WAVE_RATE(WAVE_RATE)) sawtooth (.clk_audio(clk_audio), .level(audio_sample_word));
 
 `else
 //always @(posedge clk_audio)
@@ -62,7 +62,7 @@ generate
     OBUFDS #(.IOSTANDARD("TMDS_33")) obufds_clock(.I(tmds_clock), .O(HDMI_CLK), .OB(HDMI_CLK_N));
 endgenerate
 
-`ifdef nothing
+`ifndef nothing
 logic [7:0] character = 8'h30;
 logic [5:0] prevcy = 6'd0;
 always @(posedge clk_pixel)
