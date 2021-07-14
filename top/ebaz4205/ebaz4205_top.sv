@@ -75,25 +75,18 @@ localparam AUDIO_BIT_WIDTH = 16;
 localparam AUDIO_RATE = 48000;
 localparam WAVE_RATE = 480;
 
-logic [AUDIO_BIT_WIDTH-1:0] audio_sample_word = 16'd0;
+logic [AUDIO_BIT_WIDTH-1:0] audio_sample_word;
 logic [AUDIO_BIT_WIDTH-1:0] audio_sample_word_dampened; // This is to avoid giving you a heart attack -- it'll be really loud if it uses the full dynamic range.
 assign audio_sample_word_dampened = audio_sample_word >> 4;
 
-// todo: these modules produce no output for some unknown reason
-// inline versions below seem just fine
-//sawtooth #(.BIT_WIDTH(AUDIO_BIT_WIDTH), .SAMPLE_RATE(AUDIO_RATE), .WAVE_RATE(WAVE_RATE)) sawtooth (.clk_audio(clk_audio), .level(audio_sample_word));
-//sinus_gen sinus_gen( .clk_audio(clk_audio), .level(audio_sample_word) );
 
-`ifndef do_sawtooth
-//todo: restore - sawtooth #(.BIT_WIDTH(AUDIO_BIT_WIDTH), .SAMPLE_RATE(AUDIO_RATE), .WAVE_RATE(WAVE_RATE)) sawtooth (.clk_audio(clk_audio), .level(audio_sample_word));
-localparam int NUM_PCM_STEPS = (AUDIO_BIT_WIDTH + 1)'(2)**(AUDIO_BIT_WIDTH + 1)'(AUDIO_BIT_WIDTH) - 1;
-localparam real FREQUENCY_RATIO = real'(WAVE_RATE) / real'(AUDIO_RATE);
-localparam bit [AUDIO_BIT_WIDTH-1:0] INCREMENT = AUDIO_BIT_WIDTH'(NUM_PCM_STEPS * FREQUENCY_RATIO);
-always @(posedge clk_audio)
-  audio_sample_word <= audio_sample_word + INCREMENT; 
-
+`ifdef do_sawtooth
+sawtooth #(.BIT_WIDTH(AUDIO_BIT_WIDTH), .SAMPLE_RATE(AUDIO_RATE), .WAVE_RATE(WAVE_RATE)) sawtooth (.clk_audio(clk_audio), .level(audio_sample_word));
 `else
-//todo: restore - sinus_gen sinus_gen( .clk_audio(clk_audio), .level(audio_sample_word) );
+`ifdef do sinewave_pcm
+sinus_gen sinus_gen( .clk_audio(clk_audio), .level(audio_sample_word) );
+`else
+// pwm uses sinwave rom, cant use sinewave module just yet
 parameter SIZE = 1024;    
 reg [15:0] rom_memory [SIZE-1:0];
 integer j;
@@ -147,7 +140,7 @@ always@(posedge clk_pixel)
   assign pwm_left = pwm_out;
   assign pwm_right = pwm_out;
 `endif
-
+`endif
 
 logic [23:0] rgb;
 logic [10:0] cx, cy;

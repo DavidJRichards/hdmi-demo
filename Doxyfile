@@ -860,7 +860,8 @@ FILE_PATTERNS          = *.svh \
                          *.xpr \
                          *.xdc \
                          *.md \
-                         *.v
+                         *.v \
+                         *.mem
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
