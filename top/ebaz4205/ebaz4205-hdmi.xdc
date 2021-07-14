@@ -11,20 +11,6 @@ create_clock -period 30.0 -name CLK_33MHZ [get_ports CLK_33MHZ]
 #set_property PACKAGE_PIN N18 [get_ports CLK_100MHZ]
 #create_clock -add -name CLK_100MHZ -period 10.00 -waveform {0 5} [get_ports CLK_100MHZ]
 
-
-# HDMI
-#set_property -dict { PACKAGE_PIN G2   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX[2]   }];
-#set_property -dict { PACKAGE_PIN G1   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX_N[2] }];
-
-#set_property -dict { PACKAGE_PIN F2   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX[1]   }];
-#set_property -dict { PACKAGE_PIN E2   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX_N[1] }];
-
-#set_property -dict { PACKAGE_PIN E1   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX[0]   }];
-#set_property -dict { PACKAGE_PIN D1   IOSTANDARD TMDS_33 } [get_ports { HDMI_TX_N[0] }];
-
-#set_property -dict { PACKAGE_PIN D4   IOSTANDARD TMDS_33 } [get_ports { HDMI_CLK     }];
-#set_property -dict { PACKAGE_PIN C4   IOSTANDARD TMDS_33 } [get_ports { HDMI_CLK_N   }];
-
 #########################################################
 # TMDS (DVI, HDMI)                                      #
 #########################################################
@@ -39,48 +25,28 @@ set_property -dict {PACKAGE_PIN F20 IOSTANDARD TMDS_33} [get_ports {HDMI_TX_N[2]
 set_property -dict {PACKAGE_PIN F19 IOSTANDARD TMDS_33} [get_ports {HDMI_TX[2]}]
 
 # CEC, SDA, SCL, DPD_DET
-set_property IOSTANDARD LVCMOS33 [get_ports HDMI_CEC] 
-set_property IOSTANDARD LVCMOS33 [get_ports HDMI_SDA] 
-set_property IOSTANDARD LVCMOS33 [get_ports HDMI_SCL] 
-set_property IOSTANDARD LVCMOS33 [get_ports HDMI_HPD] 
+#set_property -dict {PACKAGE_PIN B19 IOSTANDARD LVCMOS33 PULLUP true} [get_ports HDMI_CEC] 
+#set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33 PULLUP true} [get_ports HDMI_SDA] 
+#set_property -dict {PACKAGE_PIN K17 IOSTANDARD LVCMOS33 PULLUP true} [get_ports HDMI_SCL] 
+#set_property -dict {PACKAGE_PIN E19 IOSTANDARD LVCMOS33 PULLUP true} [get_ports HDMI_HPD] 
+# button / HDMI_OEN
+set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33 PULLUP true} [get_ports led_button]
 
-set_property PULLTYPE PULLUP [get_ports HDMI_CEC]
-set_property PULLTYPE PULLUP [get_ports HDMI_SDA]
-set_property PULLTYPE PULLUP [get_ports HDMI_SCL]
-set_property PULLTYPE PULLUP [get_ports HDMI_HPD]
-
-set_property PACKAGE_PIN B19 [get_ports HDMI_CEC]
-set_property PACKAGE_PIN D18 [get_ports HDMI_SDA]
-set_property PACKAGE_PIN K17 [get_ports HDMI_SCL]
-set_property PACKAGE_PIN E19 [get_ports HDMI_HPD]
-
-# Keyboard
-#set_property -dict { PACKAGE_PIN AC26   IOSTANDARD LVCMOS33 } [get_ports { PS2_CLOCK   }];
-#set_property -dict { PACKAGE_PIN AB26   IOSTANDARD LVCMOS33 } [get_ports { PS2_DATA    }];
 ##################################
-# J3, PS2 interface
+# J3, PS2 interface - keyboard
 ##################################
-set_property PACKAGE_PIN V13 [get_ports {PS2_DATA}]
-set_property PULLUP true [get_ports {PS2_DATA}]
-set_property IOSTANDARD LVCMOS33 [get_ports {PS2_DATA}]
-
-set_property PACKAGE_PIN U12 [get_ports {PS2_CLOCK}]
-set_property PULLUP true [get_ports {PS2_CLOCK}]
-set_property IOSTANDARD LVCMOS33 [get_ports {PS2_CLOCK}]
+#set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS33 PULLUP true} [get_ports PS2_DATA] 
+#set_property -dict {PACKAGE_PIN U12 IOSTANDARD LVCMOS33 PULLUP true} [get_ports PS2_CLOCK]
 
 # LEDs
-#set_property IOSTANDARD LVCMOS33 [get_ports LED[0]]
-#set_property IOSTANDARD LVCMOS33 [get_ports LED[1]]
-#set_property PACKAGE_PIN J1 [get_ports LED[0]]
-#set_property PACKAGE_PIN A13 [get_ports LED[1]]
-
-## LEDS
+set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports {led_blue}]
+#set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {led_green}]
+#set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {led_red}]
 set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports LED[0]]
 set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports LED[1]]
 
-set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33} [get_ports clk_audio]
-set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33} [get_ports clk_pixel]
-# button
-#set_property PACKAGE_PIN H18 [get_ports clk_pixel]
-#set_property PULLUP true [get_ports ext_irq]
-#set_property IOSTANDARD LVCMOS33 [get_ports clk_pixel]
+##################################
+# J5 UART interface
+##################################
+set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33 } [get_ports {pwm_left}]
+set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33 } [get_ports {pwm_right}]
