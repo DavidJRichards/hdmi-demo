@@ -42,8 +42,8 @@ set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33 PULLUP true} [get_ports 
 set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports {led_blue}]
 #set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports {led_green}]
 #set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports {led_red}]
-set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports LED[0]]
-set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports LED[1]]
+#set_property -dict {PACKAGE_PIN W13 IOSTANDARD LVCMOS33} [get_ports LED[0]]
+#set_property -dict {PACKAGE_PIN W14 IOSTANDARD LVCMOS33} [get_ports LED[1]]
 
 ##################################
 # J5 UART interface

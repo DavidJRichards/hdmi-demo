@@ -70,7 +70,11 @@
 
 module hdmi_pll_xilinx 
 #(
-    parameter VIDEO_ID = 4
+  MULT_F = 30.250,      // CLKFBOUT_MULT_F
+  DIVCLK_DIVIDE = 1,    // DIVCLK_DIVIDE
+  DIV1_F = 40.0,        // CLKOUT0_DIVIDE_F
+  DIV2 = 8,             // CLKOUT1_DIVIDE
+  CLKIN_PERIOD = 30.0   // CLKIN_PERIOD
  )
 
  (// Clock in ports
@@ -124,52 +128,26 @@ wire clk_in2_clk_wiz_0;
   wire        clkfbstopped_unused;
   wire        clkinstopped_unused;
   
-//generate
-//    if (VIDEO_ID)
-//;
-
-  
   MMCME2_ADV
 
-`ifdef VIDEO_ID_4  // 74.375
   #(.BANDWIDTH            ("OPTIMIZED"),
     .CLKOUT4_CASCADE      ("FALSE"),
     .COMPENSATION         ("ZHOLD"),
     .STARTUP_WAIT         ("FALSE"),
-    .DIVCLK_DIVIDE        (2),
-    .CLKFBOUT_MULT_F      (44.625),
+    .DIVCLK_DIVIDE        (DIVCLK_DIVIDE),
+    .CLKFBOUT_MULT_F      (MULT_F),
     .CLKFBOUT_PHASE       (0.000),
     .CLKFBOUT_USE_FINE_PS ("FALSE"),
-    .CLKOUT0_DIVIDE_F     (10.000),
+    .CLKOUT0_DIVIDE_F     (DIV1_F),
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
     .CLKOUT0_USE_FINE_PS  ("FALSE"),
-    .CLKOUT1_DIVIDE       (2),
+    .CLKOUT1_DIVIDE       (DIV2),
     .CLKOUT1_PHASE        (0.000),
     .CLKOUT1_DUTY_CYCLE   (0.500),
     .CLKOUT1_USE_FINE_PS  ("FALSE"),
     .CLKIN1_PERIOD        (30.000))
     
-`elsif VIDEO_ID_1   // 25.20833
-  #(.BANDWIDTH            ("OPTIMIZED"),
-    .CLKOUT4_CASCADE      ("FALSE"),
-    .COMPENSATION         ("ZHOLD"),
-    .STARTUP_WAIT         ("FALSE"),
-    .DIVCLK_DIVIDE        (1),
-    .CLKFBOUT_MULT_F      (30.250),
-    .CLKFBOUT_PHASE       (0.000),
-    .CLKFBOUT_USE_FINE_PS ("FALSE"),
-    .CLKOUT0_DIVIDE_F     (40.000),
-    .CLKOUT0_PHASE        (0.000),
-    .CLKOUT0_DUTY_CYCLE   (0.500),
-    .CLKOUT0_USE_FINE_PS  ("FALSE"),
-    .CLKOUT1_DIVIDE       (8),//8
-    .CLKOUT1_PHASE        (0.000),
-    .CLKOUT1_DUTY_CYCLE   (0.500),
-    .CLKOUT1_USE_FINE_PS  ("FALSE"),
-    .CLKIN1_PERIOD        (30.000))
-`endif    
-
   mmcm_adv_inst
     // Output clocks
    (
